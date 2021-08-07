@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -86,6 +87,31 @@ namespace AddressBookADO.Net
                     this.connection.Close();
                 }
             
+        }
+        public void UpdateCityName()
+        {
+            
+            using (this.connection)
+            {
+                SqlCommand command = new SqlCommand("UpdateCity", this.connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@city", data.city);
+
+                command.Parameters.AddWithValue("@PhoneNumber", data.PhoneNumber);
+                
+               
+                this.connection.Open();
+                int res = command.ExecuteNonQuery();
+                if (res == 0)
+                {
+                    Console.WriteLine("Query NOt executed...");
+                }
+                else
+                {
+                    Console.WriteLine("Query executed successfully...");
+                }
+                this.connection.Close();
+            }
         }
 
     }
