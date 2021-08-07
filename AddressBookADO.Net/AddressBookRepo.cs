@@ -62,7 +62,33 @@ namespace AddressBookADO.Net
                     this.connection.Close();
                 }
             }
+
+        public void UpdateRecord()
+        {         
+                using (this.connection)
+                {
+                    //Updating address  using Sql Query 
+                    string query = @"update Addressbooktable set address = 'Bhpl' where FirstName = 'Kumar'";
+
+                    SqlCommand command = new SqlCommand(query, this.connection);
+
+                    this.connection.Open();
+                    
+                    int result = command.ExecuteNonQuery();
+                    if (result == 0)
+                    {
+                        Console.WriteLine("Query Not Executed..");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Query Executed successfully...");
+                    }
+                    this.connection.Close();
+                }
+            
         }
+
+    }
 
 
     
