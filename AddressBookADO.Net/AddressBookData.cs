@@ -17,5 +17,6 @@ namespace AddressBookADO.Net
         public string email { get; set; }
         public string BookName { get; set; }
         public string type { get; set; }
+        public int count { get; set; }
     }
 }

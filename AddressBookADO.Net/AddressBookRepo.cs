@@ -113,6 +113,36 @@ namespace AddressBookADO.Net
                 this.connection.Close();
             }
         }
+       
+        public void RetrieveCount()
+        {
+
+            using (this.connection)
+            {
+                //retrieving number of contacts using stored procedure
+                SqlCommand command = new SqlCommand("ContactCount", this.connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Zip", data.Zip);
+                //openin connection
+                this.connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        data.count = reader.GetInt32(0);
+
+                        Console.WriteLine("Total number of contacts in book are ..{0}", data.count);
+                    }
+                }
+
+                else
+                {
+                    Console.WriteLine("No data exists....");
+                }
+                this.connection.Close();
+            }
+        }
 
     }
 

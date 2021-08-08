@@ -8,9 +8,11 @@ namespace AddressBookADO.Net
         {
             Console.WriteLine("Welcome to AddressBook..........");
             AddressBookRepo repo = new AddressBookRepo();
-            repo.UpdateCityName();
-          //  repo.DisplayDetails();
-          //  repo.UpdateRecord();
+            // repo.UpdateCityName();
+            //  repo.DisplayDetails();
+            //  repo.UpdateRecord();
+           // repo.RetrieveContactsCount();
+            repo.RetrieveCount();
         }
     }
 }
