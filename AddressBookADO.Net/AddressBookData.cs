@@ -18,5 +18,6 @@ namespace AddressBookADO.Net
         public string BookName { get; set; }
         public string type { get; set; }
         public int count { get; set; }
+        public string number { get; set; }
     }
 }

@@ -12,8 +12,9 @@ namespace AddressBookADO.Net
             //  repo.DisplayDetails();
             //  repo.UpdateRecord();
             // repo.RetrieveCount();
+            repo.RetrieveUsingThreads();
             Transactions transactions = new Transactions();
-            transactions.AddContact();
+            //transactions.AddContact();
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Threading;
+using System.Diagnostics;
 
 namespace AddressBookADO.Net
 {
@@ -140,6 +142,77 @@ namespace AddressBookADO.Net
                 {
                     Console.WriteLine("No data exists....");
                 }
+                this.connection.Close();
+            }
+        }
+
+        public void RetrieveUsingThreads()
+        {
+          
+                //creating object for stopwatch method
+                Stopwatch stopwatch = new Stopwatch();
+                //start and stop the stopwatch to get the elapsed time
+                stopwatch.Start();
+                AddMultipleContacts();
+                stopwatch.Stop();
+                //Printing time taken to retrieve details
+                Console.WriteLine("Time taken to retrieve data is :" + stopwatch.ElapsedMilliseconds + " ms");
+           
+        }
+
+        public void AddMultipleContacts()
+        {
+            using (this.connection)
+            {
+                //Query to retireve details from table
+                string query = @"select BookName, FirstName,LastName,address,city,state,Zip,PhoneNumber,email,TypeName
+                               from ContactBook 
+                                INNER JOIN ContactPerson on ContactBook.AddressBookId = ContactPerson.BookId and (state = 'Telangana')
+                                INNER JOIN Relation on Relation.ContId = ContactPerson.ContactId
+                                INNER JOIN ContactType on Relation.TypId = ContactType.TypeId;";
+
+                SqlCommand command = new SqlCommand(query, this.connection);
+                //Opening connection
+                this.connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                try
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            data.BookName = reader.GetString(0);
+                            data.FirstName = reader.GetString(1);
+                            data.Lastname = reader.GetString(2);
+                            data.address = reader.GetString(3);
+                            data.city = reader.GetString(4);
+                            data.state = reader.GetString(5);
+                            data.Zip = reader.GetInt64(6);
+                            data.number = reader.GetString(7);
+                            data.email = reader.GetString(8);
+                            
+                            data.type = reader.GetString(9);
+                            
+                            Thread thread = new Thread(() =>
+                                {
+
+                                
+                                Console.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}", data.BookName, data.FirstName, data.Lastname, data.address, data.city, data.state, data.Zip, data.PhoneNumber, data.email,  data.type);
+                            });
+                            thread.Start();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No data exists....");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                //Closing connectio
                 this.connection.Close();
             }
         }
